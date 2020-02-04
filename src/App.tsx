@@ -48,11 +48,23 @@ function App () {
     console.log(todos)
   }
 
+  const enterKeyPress = (e: any) => {
+    if(e.key == 'Enter') {
+      setTodos([...todos, {
+        mytodos: mytodo.here,
+        id: Math.floor(Math.random() * 300),
+        completed: false,
+      }]);
+      addTodo({here:''})
+
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
       <h3>Todo App</h3>
-      <input value={mytodo.here} onChange={handleAdd}></input>
+      <input value={mytodo.here} onKeyPress={enterKeyPress} onChange={handleAdd}></input>
       <button onClick={() => handleChange()}>Add Todo</button>
       
       {todos.map(i => 
