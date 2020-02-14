@@ -125,19 +125,14 @@ const App = (props: { invoice: any }) => {
     }
   }
 
-  const escapeKeyPress = (e:any) => {
-    console.log(e.key)
-    if (e.key === 'Escape'){
-       setEditId(0)
-    }
-  }
-
   const removeEdit = (e: any) => {
     console.log(e.key)
     if (e.key == 'Escape') {
       setEditId(undefined)
     }
   }
+
+  
 
   return (
     <div className="App" onKeyPress={removeEdit}>
@@ -157,7 +152,7 @@ const App = (props: { invoice: any }) => {
           return <div key={i.id}>
             <span onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }}>
               {editID == i.id ? <input className="form-input mt-1 block w-full"
-                value={editValue} onKeyPress={escapeKeyPress} onChange={handleEdit}></input>
+                value={editValue} onKeyPress={(e:any) =>  {if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else{ console.log(e.key)}}} onChange={handleEdit}></input>
                 : i.todo}
                 
                  <button onClick={() => i.remove()}>X</button>
