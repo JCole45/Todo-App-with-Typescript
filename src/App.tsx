@@ -152,8 +152,10 @@ const App = (props: { invoice: any }) => {
           return <div key={i.id}>
             <span onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }}>
               {editID == i.id ? <input className="form-input mt-1 block w-full"
-                value={editValue} onKeyPress={(e:any) =>  {if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else{ console.log(e.key)}}} onChange={handleEdit}></input>
+                value={editValue} onKeyPress={(e:any) =>  {if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else if(e.keyCode === 27){ setEditId(undefined) }}} onChange={handleEdit}></input>
                 : i.todo}
+           </span>
+
                 
                  <button onClick={() => i.remove()}>X</button>
 
@@ -161,7 +163,6 @@ const App = (props: { invoice: any }) => {
 
               <button onClick={() => i.check()}> {i.completed ? 'uncheck' : 'check'}</button>
 
-            </span>
           </div>
         })}
 
