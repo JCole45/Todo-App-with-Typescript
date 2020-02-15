@@ -135,7 +135,7 @@ const App = (props: { invoice: any }) => {
   
 
   return (
-    <div className="App" onKeyPress={removeEdit}>
+    <div className="App" onKeyDown={removeEdit}>
       <header className="App-header">
         <h3>Todo App</h3>
         {!edit ?
@@ -145,19 +145,18 @@ const App = (props: { invoice: any }) => {
           <input className="form-input mt-1 block w-full"
             value={editValue} onKeyPress={enterKeyPress} onChange={handleEdit}></input>
         }
-         <button onClick={() => handleChange()}>Add Todo</button>
 
 
         {thetodos.todos.items.map((i: any) => {
           return <div key={i.id}>
             <span onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }}>
               {editID == i.id ? <input className="form-input mt-1 block w-full"
-                value={editValue} onKeyPress={(e:any) =>  {if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else if(e.keyCode === 27){ setEditId(undefined) }}} onChange={handleEdit}></input>
+                value={editValue} onKeyDown={(e:any) =>  { console.log(e.key + ' ' + e.charCode + ' ' + e.keyCode); if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else if(e.key === 'Escape'){ setEditId(undefined) }}} onChange={handleEdit}></input>
                 : i.todo}
            </span>
 
                 
-                 <button onClick={() => i.remove()}>X</button>
+                 {editID !== i.id ? <button onClick={() => i.remove()}>X</button> : null}
 
               {editID == i.id ? <button onClick={() => { i.edit(editValue); setEditId(undefined) }}> Edit </button> : null}
 
