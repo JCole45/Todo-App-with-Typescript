@@ -46,6 +46,7 @@ const App = (props: { invoice: any }) => {
   const [editStatus, setEditStatus] = useState<boolean>()
   const refContainer = useRef<null>(null)
   const [width , setWidth ] = useState<string>()
+  const [ status , setStatus ] = useState<string>('all')
 
 
   useEffect(() => {
@@ -168,20 +169,21 @@ const App = (props: { invoice: any }) => {
           <input className="input-field" style={{height:50, width:350 }} placeholder="What needs to be done?"
             value={mytodo.here} onKeyPress={enterKeyPress} onChange={handleAdd}></input>
 
-
-        {thetodos.todos.items.map((i: any) => {
-          return <div key={i.id} className="wrapper">
+      
+        {status == 'all' ?
+          thetodos.todos.items.map((i: any) => {
+          return <div key={i.id} className="">
 
            
-            <span onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }}>
+            <span >
               {editID == i.id ? <div>  <input className="input-field" style={{height:50, width:350 }} 
                 value={editValue} onKeyDown={(e:any) =>  { console.log(e.key + ' ' + e.charCode + ' ' + e.keyCode); if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else if(e.key === 'Escape'){ setEditId(undefined) }}} onChange={handleEdit}></input> </div>
                
                 :
                
              <div className="box-field">
-             <div> <input onClick={()=> i.check()} type="radio" checked={i.completed ? true : false}/></div>
-             <div className={i.completed ? "todo-text" : ""}>{i.todo }  </div>
+             <div className="small-box-field"> <input onClick={()=> i.check()} type="radio" checked={i.completed ? true : false}/></div>
+             <div onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }} className={i.completed ? "todo-text" : ""}>{i.todo }  </div>
            <div> {editID !== i.id ? <button onClick={() => i.remove()}>X</button> : null} </div>
 
              </div>
@@ -189,7 +191,70 @@ const App = (props: { invoice: any }) => {
            </span>
 
           </div>
-        })}
+        })
+      :
+      status == 'completed'
+      ?
+      
+      thetodos.todos.items.map((i:any) => {
+        
+       if( i.completed == true) { return <div key={i.id} className="wrapper">
+
+         
+          <span >
+            {editID == i.id ? <div>  <input className="input-field" style={{height:50, width:350 }} 
+              value={editValue} onKeyDown={(e:any) =>  { console.log(e.key + ' ' + e.charCode + ' ' + e.keyCode); if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else if(e.key === 'Escape'){ setEditId(undefined) }}} onChange={handleEdit}></input> </div>
+             
+              :
+             
+           <div className="box-field">
+           <div> <input onClick={()=> i.check()} type="radio" checked={i.completed ? true : false}/></div>
+           <div onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }} className={i.completed ? "todo-text" : ""}>{i.todo }  </div>
+         <div> {editID !== i.id ? <button onClick={() => i.remove()}>X</button> : null} </div>
+
+           </div>
+            }
+         </span>
+
+        </div>}else {
+         
+      return null}
+      })
+
+
+      :
+      thetodos.todos.items.map((i:any) => {
+        
+        if( i.completed == false) { return <div key={i.id} className="wrapper">
+ 
+          
+           <span >
+             {editID == i.id ? <div>  <input className="input-field" style={{height:50, width:350 }} 
+               value={editValue} onKeyDown={(e:any) =>  { console.log(e.key + ' ' + e.charCode + ' ' + e.keyCode); if(e.key =='Enter'){ i.edit(editValue); setEditId(0)  }else if(e.key === 'Escape'){ setEditId(undefined) }}} onChange={handleEdit}></input> </div>
+              
+               :
+              
+            <div className="box-field">
+            <div> <input onClick={()=> i.check()} type="radio" checked={i.completed ? true : false}/></div>
+            <div onDoubleClick={() => { setEditId(i.id); addEdit(i.todo) }} className={i.completed ? "todo-text" : ""}>{i.todo }  </div>
+          <div> {editID !== i.id ? <button onClick={() => i.remove()}>X</button> : null} </div>
+ 
+            </div>
+             }
+          </span>
+ 
+         </div>}else {
+          
+       return null}
+       })
+       }
+
+        <div>
+           <button onClick={()=> setStatus('all')}>All</button>
+           <button onClick={()=> setStatus('active')}>Active</button>
+           <button onClick={()=> setStatus('completed')}>Completed</button>
+
+        </div>
 
 
       </header>
